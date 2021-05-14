@@ -1,4 +1,4 @@
-# authembed
+# Authembed
 
 🔒 A united authentication point that securely combines all the sign up/in options into one solution
 
