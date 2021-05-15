@@ -25,6 +25,9 @@ export class UserModel {
   @Prop({ type: String, required: true, unique: true })
   email: string;
 
+  @Prop({ type: Boolean })
+  emailVerified: boolean;
+
   @Prop({ type: String, required: true })
   passwordHash: string;
 

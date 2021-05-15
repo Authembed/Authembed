@@ -14,11 +14,17 @@ export class UsersService {
     email: string;
     passwordHash: string;
     name: string;
+    emailVerified?: boolean;
+    metadata?: Record<string, unknown> | null;
+    privateMetadata?: Record<string, unknown> | null;
   }): Promise<UserDocument> {
     const user = await this.userModel.create({
       email: data.email,
       passwordHash: data.passwordHash,
       name: data.name,
+      emailVerified: data.emailVerified,
+      metadata: data.metadata,
+      privateMetadata: data.privateMetadata,
     });
 
     return user;
@@ -35,5 +41,9 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async isEmailTaken(email: string): Promise<boolean> {
+    return !!(await this.userModel.countDocuments({ email }));
   }
 }

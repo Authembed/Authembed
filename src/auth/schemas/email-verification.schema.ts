@@ -27,17 +27,21 @@ export class EmailVerificationModel {
   @Prop({ type: String, required: true })
   verificationCode: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: Number, required: true })
   attempts: number;
 
   @Prop({ type: String, required: true })
   status: 'SUCCESS' | 'FAILED' | 'PENDING';
 
+  @Prop({ type: Boolean })
+  alreadyRegistered?: boolean;
+
   @Prop({ type: Object })
-  registrationData: {
+  registrationData?: {
     email: string;
     passwordHash: string;
     name: string;
+    metadata?: Record<string, unknown> | null;
   };
 }
 

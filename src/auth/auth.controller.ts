@@ -45,13 +45,31 @@ export class AuthController {
     };
   }
 
-  @Post('api/auth/register')
-  async startRegistration(
+  @Post('api/auth/register-with-lazy-email-verification')
+  async registerWithLazyEmailVerification(
+    @Body() body: StartRegistrationRequestBodyDto,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<any> {
+    const {
+      accessToken,
+      user,
+    } = await this.authService.registerWithLazyEmailVerification(body);
+
+    response.cookie('authembed_access_token', accessToken);
+
+    return {
+      accessToken,
+      user,
+    };
+  }
+
+  @Post('api/auth/register-with-email-verification')
+  async registerWithEmailVerification(
     @Body() body: StartRegistrationRequestBodyDto,
   ): Promise<any> {
-    const { emailVerificationId } = await this.authService.startRegistration(
-      body,
-    );
+    const {
+      emailVerificationId,
+    } = await this.authService.registerWithEmailVerification(body);
 
     return { emailVerificationId };
   }
@@ -61,18 +79,32 @@ export class AuthController {
     return await this.authService.getUserByToken(token);
   }
 
-  @Get('auth/email/verify')
-  async verifyEmail(
+  @Get('auth/email/verify-and-register')
+  async verifyEmailAndRegister(
     @Query('id') id: string,
     @Query('code') code: string,
     @Res({ passthrough: true }) response: Response,
   ): Promise<any> {
-    const { accessToken } = await this.authService.verifyEmail({
+    const { accessToken } = await this.authService.verifyEmailAndRegister({
       emailVerificationId: Types.ObjectId.createFromHexString(id),
       verificationCode: code,
     });
 
     response.cookie('authembed_access_token', accessToken);
     response.redirect(this.authConfigs.registrationSuccessRedirectUrl);
+  }
+
+  @Get('auth/email/verify')
+  async verifyEmail(
+    @Query('id') id: string,
+    @Query('code') code: string,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<any> {
+    await this.authService.verifyEmail({
+      emailVerificationId: Types.ObjectId.createFromHexString(id),
+      verificationCode: code,
+    });
+
+    response.redirect(this.authConfigs.emailSuccessfullyVerifiedRedirectUrl);
   }
 }
