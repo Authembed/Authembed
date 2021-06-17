@@ -35,3 +35,5 @@ lerna-debug.log*
 
 # Secrets
 *.env
+/actions
+config.json

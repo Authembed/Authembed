@@ -19,6 +19,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserDocument, UserModel } from '../users/schemas/user.schema';
 import { ErrorGenerator } from '../common/classes/error-generator.class';
+import { TriggersService } from '../triggers/triggers.service';
 
 @Injectable()
 export class AuthService {
@@ -27,6 +28,8 @@ export class AuthService {
     private readonly emailVerificationModel: Model<EmailVerificationDocument>,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
+    @Inject(forwardRef(() => TriggersService))
+    private readonly triggersService: TriggersService,
     @Inject(APP_CONFIGS_KEY)
     private readonly appConfigs: TAppConfigs,
     private readonly jwtService: JwtService,
@@ -54,6 +57,8 @@ export class AuthService {
       user.id,
       user.email,
     );
+
+    await this.triggersService.runTriggersOnUserRegistered(user);
 
     const accessToken = await this.createAccessToken(user._id);
 
@@ -237,6 +242,8 @@ export class AuthService {
     const user = await this.usersService.createUser(
       emailVerification.registrationData,
     );
+
+    await this.triggersService.runTriggersOnUserRegistered(user);
 
     const accessToken = await this.createAccessToken(user._id);
 

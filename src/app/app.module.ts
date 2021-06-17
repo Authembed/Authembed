@@ -15,11 +15,13 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { EMAIL_CONFIGS_KEY, TEmailConfigs } from '../config/email.config';
 import appRootPath from 'app-root-path';
 import path from 'path';
+import { TriggersModule } from '../triggers/triggers.module';
 
 @Module({
   imports: [
     AuthModule,
     UsersModule,
+    TriggersModule,
     ConfigModule.forRoot(configModuleOptions),
     MongooseModule.forRootAsync({
       useFactory: (mongodbConfig: MongoDBConfigType) => ({

@@ -12,10 +12,12 @@ import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserModel, UserSchema } from '../users/schemas/user.schema';
 import { LocalStrategy } from './strategies/local.strategy';
+import { TriggersModule } from '../triggers/triggers.module';
 
 @Module({
   imports: [
     forwardRef(() => UsersModule),
+    forwardRef(() => TriggersModule),
     MongooseModule.forFeature([
       { name: EmailVerificationModel.name, schema: EmailVerificationSchema },
       { name: UserModel.name, schema: UserSchema },
