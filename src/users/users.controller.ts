@@ -8,7 +8,7 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('user')
+  @Get('/api/user')
   @UseGuards(JwtAuthGuard)
   async getMe(@CurrentUser() currentUser: UserDocument): Promise<UserDocument> {
     return currentUser;
