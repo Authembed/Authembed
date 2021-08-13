@@ -4,7 +4,8 @@
       "on": "user-registered",
       "action": "initUserInMessembed",
       "modules": {
-        "messembed-sdk": "^0.4.2"
+        "messembed-sdk": "^0.4.2",
+        "axios": "latest"
       }
     }
   ]

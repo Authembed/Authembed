@@ -17,5 +17,5 @@ services:
     ports:
       - 127.0.0.1:27017:27017
     volumes:
-      - /data/messembed/mongo/data/db:/data/db
+      - /data/authembed/mongo/data/db:/data/db
     restart: unless-stopped

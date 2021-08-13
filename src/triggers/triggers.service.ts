@@ -18,9 +18,9 @@ export class TriggersService {
   ) {}
 
   async runTriggersOnUserRegistered(user: UserDocument): Promise<void> {
-    const triggerConfigsForOnUserRegistered = this.triggersConfigs.filter(
-      (config) => config.on == 'user-registered',
-    );
+    const triggerConfigsForOnUserRegistered = (
+      this.triggersConfigs || []
+    ).filter((config) => config.on == 'user-registered');
 
     for (const trigger of triggerConfigsForOnUserRegistered) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires

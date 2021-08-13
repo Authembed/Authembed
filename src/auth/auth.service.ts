@@ -56,7 +56,9 @@ export class AuthService {
     await this.sendVerificationEmailForAlreadyRegisteredUser(
       user.id,
       user.email,
-    );
+    ).catch((err) => {
+      console.error(err);
+    });
 
     await this.triggersService.runTriggersOnUserRegistered(user);
 

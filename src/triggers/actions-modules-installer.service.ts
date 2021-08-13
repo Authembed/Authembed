@@ -16,6 +16,10 @@ export class ActionsModulesInstallerService {
   ) {}
 
   async installActionsDependencies(): Promise<void> {
+    if (!this.triggersConfigs?.length) {
+      return;
+    }
+
     const modules = this.triggersConfigs.reduce<Record<string, string>>(
       (acc, value) => ({ ...acc, ...value.modules }),
       {},
