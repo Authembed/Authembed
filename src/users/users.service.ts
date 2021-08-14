@@ -46,4 +46,8 @@ export class UsersService {
   async isEmailTaken(email: string): Promise<boolean> {
     return !!(await this.userModel.countDocuments({ email }));
   }
+
+  async getUsers(query: any): Promise<UserDocument[]> {
+    return await this.userModel.find(query).exec();
+  }
 }

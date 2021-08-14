@@ -5,6 +5,8 @@ export const authConfig = registerAs('auth', () => ({
   registrationSuccessRedirectUrl: process.env.REGISTRATION_SUCCESS_REDIRECT_URL,
   emailSuccessfullyVerifiedRedirectUrl:
     process.env.EMAIL_SUCCESSFULLY_VERIFIED_REDIRECT_URL,
+
+  adminPassword: process.env.ADMIN_PASSWORD,
 }));
 
 export const AUTH_CONFIG_KEY = authConfig.KEY;
