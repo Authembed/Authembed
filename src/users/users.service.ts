@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { PatchUserRequestBodyDto } from './dtos/patch-user-request-body.dto';
 import { UserDocument, UserModel } from './schemas/user.schema';
 
 @Injectable()
@@ -47,7 +48,54 @@ export class UsersService {
     return !!(await this.userModel.countDocuments({ email }));
   }
 
+  async patchUser(
+    userId: Types.ObjectId,
+    requestBody: PatchUserRequestBodyDto,
+  ): Promise<UserDocument> {
+    const user = await this.userModel.findOne({
+      _id: userId,
+    });
+
+    if (requestBody.email) {
+      user.email = requestBody.email;
+    }
+
+    if (requestBody.name) {
+      user.name = requestBody.name;
+    }
+
+    if (requestBody.email) {
+      user.email = requestBody.email;
+    }
+
+    if (requestBody.metadata) {
+      user.metadata = requestBody.metadata;
+    }
+
+    if (requestBody.privateMetadata) {
+      user.privateMetadata = requestBody.privateMetadata;
+    }
+
+    await user.save();
+
+    return user;
+  }
+
   async getUsers(query: any): Promise<UserDocument[]> {
     return await this.userModel.find(query).exec();
+  }
+
+  async getUsersBatch(ids: string[]): Promise<Record<string, UserDocument>> {
+    const result: Record<string, UserDocument> = {};
+
+    const users = await this.userModel.find({
+      _id: { $in: ids },
+    });
+
+    users.forEach((user) => {
+      result[user._id.toString()] = user;
+    });
+
+    return result;
   }
 }

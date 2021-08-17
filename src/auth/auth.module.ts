@@ -13,6 +13,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserModel, UserSchema } from '../users/schemas/user.schema';
 import { LocalStrategy } from './strategies/local.strategy';
 import { TriggersModule } from '../triggers/triggers.module';
+import { AdminStrategy } from './strategies/admin.strategy';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { TriggersModule } from '../triggers/triggers.module';
       inject: [AUTH_CONFIG_KEY],
     }),
   ],
-  providers: [AuthService, JwtStrategy, LocalStrategy],
+  providers: [AuthService, JwtStrategy, LocalStrategy, AdminStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
