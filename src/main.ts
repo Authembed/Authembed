@@ -19,6 +19,8 @@ async function bootstrap(): Promise<void> {
     }),
   );
 
+  app.enableCors();
+
   const actionsModuleInstaller = app.get(ActionsModulesInstallerService);
 
   await actionsModuleInstaller.installActionsDependencies();
