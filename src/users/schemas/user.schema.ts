@@ -19,8 +19,8 @@ export class UserModel {
   @Prop({ type: Date })
   deletedAt?: Date;
 
-  @Prop({ type: String, required: true })
-  name: string;
+  @Prop({ type: String })
+  name?: string;
 
   @Prop({ type: String, required: true, unique: true })
   email: string;

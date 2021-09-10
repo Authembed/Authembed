@@ -14,7 +14,7 @@ export class UsersService {
   public async createUser(data: {
     email: string;
     passwordHash: string;
-    name: string;
+    name?: string;
     emailVerified?: boolean;
     metadata?: Record<string, unknown> | null;
     privateMetadata?: Record<string, unknown> | null;
