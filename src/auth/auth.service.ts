@@ -376,7 +376,7 @@ export class AuthService {
 
       const user = await this.usersService.createUser({
         email: auth.email,
-        name: auth.registrationData.name,
+        name: auth.registrationData.name || '',
         passwordHash: auth.registrationData.passwordHash,
         emailVerified: true,
         metadata: auth.registrationData.metadata,
