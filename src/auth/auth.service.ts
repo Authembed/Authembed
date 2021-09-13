@@ -112,7 +112,7 @@ export class AuthService {
       .sendMail({
         to: body.email,
         subject: 'Пароль доступа',
-        template: './generated-password',
+        template: './updated-password',
         context: {
           password: password,
         },
