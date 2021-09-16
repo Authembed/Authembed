@@ -20,7 +20,7 @@ export class UsersService {
     privateMetadata?: Record<string, unknown> | null;
   }): Promise<UserDocument> {
     const user = await this.userModel.create({
-      email: data.email,
+      email: data.email.toLocaleLowerCase(),
       passwordHash: data.passwordHash,
       name: data.name,
       emailVerified: data.emailVerified,
@@ -45,7 +45,9 @@ export class UsersService {
   }
 
   async isEmailTaken(email: string): Promise<boolean> {
-    return !!(await this.userModel.countDocuments({ email }));
+    return !!(await this.userModel.countDocuments({
+      email: email.toLocaleLowerCase(),
+    }));
   }
 
   async patchUser(
@@ -56,8 +58,8 @@ export class UsersService {
       _id: userId,
     });
 
-    if (requestBody.email) {
-      user.email = requestBody.email;
+    if (requestBody.email.toLocaleLowerCase()) {
+      user.email = requestBody.email.toLocaleLowerCase();
     }
 
     if (requestBody.name) {
@@ -65,7 +67,7 @@ export class UsersService {
     }
 
     if (requestBody.email) {
-      user.email = requestBody.email;
+      user.email = requestBody.email.toLocaleLowerCase();
     }
 
     if (requestBody.metadata) {
