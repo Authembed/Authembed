@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { InjectModel, InjectConnection } from '@nestjs/mongoose';
+import { Model, Types, Mongoose, Connection } from 'mongoose';
 import { PatchUserRequestBodyDto } from './dtos/patch-user-request-body.dto';
 import { UserDocument, UserModel } from './schemas/user.schema';
 
@@ -9,6 +9,8 @@ export class UsersService {
   constructor(
     @InjectModel(UserModel.name)
     private readonly userModel: Model<UserDocument>,
+    @InjectConnection()
+    private readonly mongodbConnection: Connection,
   ) {}
 
   public async createUser(data: {
@@ -99,5 +101,31 @@ export class UsersService {
     });
 
     return result;
+  }
+
+  async isMetadataUsed(
+    metadataKey: string,
+    metadataValue: any,
+  ): Promise<boolean> {
+    const result = await this.userModel.findOne({
+      [`metadata.${metadataKey}`]: metadataValue,
+    });
+
+    return !!result;
+  }
+
+  async setUpUniqueIndexesOnMetadatas(): Promise<void> {
+    const uniqueMetadataFields = JSON.parse(
+      process.env.UNIQUE_METADATA_FIELDS || '[]',
+    );
+
+    for (const field of uniqueMetadataFields) {
+      const result = await this.mongodbConnection.collections.users.createIndex(
+        { ['metadata.' + field]: 1 },
+        { unique: true, sparse: true },
+      );
+
+      console.log({ result });
+    }
   }
 }

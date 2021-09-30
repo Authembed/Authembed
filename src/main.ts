@@ -5,6 +5,7 @@ import { AppModule } from './app/app.module';
 import { setupSwagger } from './lib/setup-swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { ActionsModulesInstallerService } from './triggers/actions-modules-installer.service';
+import { UsersService } from './users/users.service';
 
 const logger = new Logger('Bootstrap');
 
@@ -24,6 +25,10 @@ async function bootstrap(): Promise<void> {
   const actionsModuleInstaller = app.get(ActionsModulesInstallerService);
 
   await actionsModuleInstaller.installActionsDependencies();
+
+  const usersService = app.get(UsersService);
+
+  await usersService.setUpUniqueIndexesOnMetadatas();
 
   const configService = app.get(ConfigService);
   const appPort = configService.get<number>('app.port');

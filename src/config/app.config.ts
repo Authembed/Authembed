@@ -5,6 +5,10 @@ export const appConfigsFactory = registerAs('app', () => ({
   host: process.env.HOST || 'localhost',
   baseUrl: process.env.BASE_URL,
   version: '0.1',
+
+  uniqueMetadataFields: JSON.parse(
+    process.env.UNIQUE_METADATA_FIELDS || '[]',
+  ) as string[],
 }));
 
 export const APP_CONFIGS_KEY = appConfigsFactory.KEY;
